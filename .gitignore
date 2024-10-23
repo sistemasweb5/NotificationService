@@ -1,0 +1,37 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Entorno
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Sistema de archivos
+.DS_Store
+Thumbs.db
+
+# Carpeta de pruebas
+coverage/
+test-results/
+
+# Archivos de configuración del IDE
+.vscode/
+.idea/
+*.iml
+
+# Otros
+dist/
+build/
+*.log
+
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+package-lock.json
