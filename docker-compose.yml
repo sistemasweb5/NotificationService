@@ -1,12 +1,27 @@
 version: '3'
-
 services:
-  app:
-    build: .
+  rabbitmq:
+    image: rabbitmq:3-management
     ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  notificationservice-app:
+    build: .
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - mynetwork
     environment:
-      - NODE_ENV=development
+      - RABBITMQ_URL=amqp://rabbitmq
+
+networks:
+  mynetwork:
