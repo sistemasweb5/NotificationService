@@ -64,13 +64,9 @@ jobs:
         run: |
           PR_BODY=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
           echo "Pull Request Body: $PR_BODY"
-          # Check PR description requirements
-          if ! echo "$PR_BODY" | grep -q "ID-[0-9]\+"; then
-            echo "❌ PR description must include an ID in the format: ID-20."
-            exit 1
-          fi
-          if ! echo "$PR_BODY" | grep -q "https://trello.com/c/"; then
-            echo "❌ PR description must include a Trello link."
+          # Check PR description requirements based on the template
+          if ! echo "$PR_BODY" | grep -q "Author"; then
+            echo "❌ PR description must include an 'Author' section."
             exit 1
           fi
           if ! echo "$PR_BODY" | grep -q "What did I do?"; then
@@ -83,6 +79,10 @@ jobs:
           fi
           if ! echo "$PR_BODY" | grep -q "How did I do it?"; then
             echo "❌ PR description must answer: How did I do it?"
+            exit 1
+          fi
+          if ! echo "$PR_BODY" | grep -q "Code reviewers"; then
+            echo "❌ PR description must include an 'Code reviewers' section."
             exit 1
           fi
           echo "✅ Pull request description follows the correct format."
@@ -108,7 +108,7 @@ jobs:
     steps:
       - uses: deepakputhraya/action-branch-name@master
         with:
-          regex: '^(feature|hotfix)/(ID-[0-9]+/[a-zA-Z0-9-]+|no-ref/[a-zA-Z0-9-]+)$'
+          regex: '^(feature|hotfix)/(id-[0-9]+/[a-zA-Z0-9-]+|no-ref/[a-zA-Z0-9-]+)$'
           allowed_prefixes: 'feature,hotfix'
           ignore: main,develop
           min_length: 4
