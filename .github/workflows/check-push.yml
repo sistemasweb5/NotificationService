@@ -1,0 +1,53 @@
+name: Develop Workflow with Node.js
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+permissions: read-all      
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+
+      - name: Install dependencies
+        run: npm install
+
+  check_branches_convention:
+    name: Conventional Branches Name
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: deepakputhraya/action-branch-name@master
+        with:
+          regex: '^(feature|hotfix)/(id-[0-9]+/[a-zA-Z0-9-]+|no-ref/[a-zA-Z0-9-]+)$'
+          allowed_prefixes: 'feature,hotfix'
+          ignore: main,develop
+          min_length: 4
+          max_length: 100
+          
+  check_commit_messages:
+    name: Conventional Commits Message
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: gsactions/commit-message-checker@v2
+        with:
+          pattern: '(?:feat|fix|chore|test|docs|refactor|revert|hotfix)(?:\(\w+\))?:\s[a-z]{1,2}.+(?:\n\nBREAKING CHANGE: .*)?|Merge branch .+'
+          error: 'The commit message must have the following structure: <type>(?): <description>'
+          excludeDescription: 'true'
+          excludeTitle: 'true'
+          checkAllCommitMessages: 'true'
+          accessToken: ${{ secrets.GITHUB_TOKEN }}
