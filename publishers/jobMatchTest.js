@@ -5,11 +5,21 @@ amqp.connect('amqp://localhost', (err, connection) => {
   connection.createChannel((err, channel) => {
     if (err) throw err;
     const exchange = 'job_events';
-    const targetUserIds = ["123ftp", "sdsa", "sssaaa"];
-    const msg = JSON.stringify({ type: 'JobMatched', details: { jobId: 123 }, userIds: targetUserIds });
+
+    const jobMatch = {
+      type: 'JobMatched',
+      message: "¿Deseas aceptar este trabajo?",
+      details: { 
+        jobId: 123,
+        workerId: "123ftp",
+        workerName: "Juan Pérez",
+        userId: "123ftp"
+      },
+      userIds: ["123ftp"]
+    };
 
     channel.assertExchange(exchange, 'direct', { durable: false });
-    channel.publish(exchange, 'JobMatched', Buffer.from(msg));
+    channel.publish(exchange, 'JobMatched', Buffer.from(JSON.stringify(jobMatch)));
     console.log(" [x] Sent 'JobMatched' event");
 
     setTimeout(() => {
