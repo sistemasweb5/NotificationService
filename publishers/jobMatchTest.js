@@ -8,14 +8,22 @@ amqp.connect('amqp://localhost', (err, connection) => {
 
     const jobMatch = {
       type: 'JobMatched',
-      message: "¿Deseas aceptar este trabajo?",
+      message: "Do you wish to accept this job?",
       details: { 
         jobId: 123,
-        workerId: "123ftp",
-        workerName: "Juan Pérez",
         userId: "123ftp"
       },
-      userIds: ["123ftp"]
+      workers: [{
+        id: "sf1421",
+        name: "Juan Perez"
+      },
+      {
+        id: "s8ujii1",
+        name: "Marta Perez"
+      },{
+        id: "123ftp",
+        name: "Pepe Perez"
+      },]
     };
 
     channel.assertExchange(exchange, 'direct', { durable: false });

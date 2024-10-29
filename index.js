@@ -59,25 +59,25 @@ function listenToJobEvents(retries = 5) {
             const event = JSON.parse(msg.content.toString());
             console.log(" [x] Received event:", event);
 
-            const { type, details, userIds = [] } = event;
+            const { type, details, workers = [] } = event;
 
             let message;
             switch (type) {
               case 'JobMatched':
                 message = 'Trabajo ha sido matcheado';
-                io.emit('jobMatchedNotification', { message, jobDetails: details, userIds: userIds });
+                io.emit('jobMatchedNotification', { message, jobDetails: details, workers: workers });
                 break;
               case 'JobAccepted':
                 message = 'Trabajo ha sido aceptado';
-                io.emit('jobAcceptedNotification', { message, jobDetails: details, userIds: userIds });
+                io.emit('jobAcceptedNotification', { message, jobDetails: details, workers: workers });
                 break;
               case 'JobRejected':
                 message = 'Trabajo ha sido rechazado';
-                io.emit('jobRejectedNotification', { message, jobDetails: details, userIds: userIds });
+                io.emit('jobRejectedNotification', { message, jobDetails: details, workers: workers });
                 break;
               case 'JobPropositionRequest':
                 message = 'Propuesta de salario ha sido enviada';
-                io.emit('jobPropositionNotification', { message, jobDetails: details, userIds: userIds });
+                io.emit('jobPropositionNotification', { message, jobDetails: details, workers: workers });
                 break;
               default:
                 console.warn('Unknown event type:', type);
