@@ -22,6 +22,8 @@ services:
       - mynetwork
     environment:
       - RABBITMQ_URL=amqp://rabbitmq
+    ports:
+      - '3000:3000'
 
 networks:
   mynetwork:
