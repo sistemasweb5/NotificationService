@@ -9,4 +9,15 @@ To run the server:
 
 To Test logs: 
 - sudo docker logs -f notificationservice-notificationservice-app-1
-- node test<fileName>.js
+- node <fileName>.js
+
+
+To Restore Server:
+
+- sudo docker-compose down 
+(if it doesn't work, restart docker service with:)
+
+- sudo docker network prune
+- sudo rm /var/lib/docker/network/files/local-kv.db
+- sudo systemctl restart docker
+- sudo docker-compose up --build
